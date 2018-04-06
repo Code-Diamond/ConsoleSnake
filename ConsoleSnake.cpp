@@ -2,12 +2,28 @@
 
 using namespace std;
 
+//Function definitions
 char** CreateMap();
 void UpdateMap(char**);
 void DisplayView(char**);
 void AskToContinue();
+void GetUserInput();
+
+
+//Starting coordinates
 int x = 3;
 int y = 3;
+
+//Contains coordinates for each snake body part
+int* snakeX = new int[400];
+int* snakeY = new int[400];
+
+//Create enumerator for directions
+enum Direction 
+{
+	UP, DOWN, LEFT, RIGHT
+};
+Direction currentDirection;
 
 int main()
 {
@@ -18,6 +34,9 @@ int main()
 	//Game loop
 	while (gameLoop)
 	{
+		//TODO: Need to retrieve user input 'behind the scenes'
+		GetUserInput();
+
 		UpdateMap(map);
 		DisplayView(map);
 		//If snake accidently hits himself
@@ -29,6 +48,29 @@ int main()
 
 	return 0;
 }
+//Get the user input
+void GetUserInput()
+{
+	char input;
+	cin >> input;
+	if (input == 'w')
+	{
+		currentDirection = UP;
+	}
+	else if (input == 's')
+	{
+		currentDirection = DOWN;
+	}
+	else if (input == 'a')
+	{
+		currentDirection = LEFT;
+	}
+	else if (input == 'd')
+	{
+		currentDirection = RIGHT;
+	}
+}
+
 //Initial creation of the gmae map array
 char** CreateMap()
 {
