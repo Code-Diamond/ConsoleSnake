@@ -1,5 +1,6 @@
 #include <iostream>
 #include <conio.h>
+#include <time.h>
 using namespace std;
 
 //Function definitions
@@ -10,36 +11,41 @@ void AskToContinue();
 void GetUserInput();
 
 
-//Starting coordinates
+//Starting coordinates for snake / snake head
 int x = 3;
 int y = 3;
-
+int mouseX, mouseY;
 //Contains coordinates for each snake body part
 int* snakeX = new int[400];
 int* snakeY = new int[400];
-
-//Create enumerator for directions
-enum Direction 
-{
-	UP, DOWN, LEFT, RIGHT
-};
-Direction currentDirection;
 
 int main()
 {
 	//Create map
 	char** map = CreateMap();
-	
+	//Food
+	srand(time(NULL));
+	bool mouseEaten = false;
+	//make mouse coordinates the map width / height
+	mouseX = (rand() % 19)+1;//dont have it spawn on 0
+	mouseY = (rand() % 19)+1;
+	if(mouseX==19){mouseX--;}//dont have it spawn on max
+	if(mouseY==19){mouseY--;}
 	bool gameLoop = true;
 	//Game loop
 	while (gameLoop)
 	{
-		//TODO: Need to retrieve user input 'behind the scenes'
-		GetUserInput();
+		while(!mouseEaten)
+		{
+			//TODO: Need to retrieve user input 'behind the scenes'
+			GetUserInput();
 
-		UpdateMap(map);
-		DisplayView(map);
-		//If snake accidently hits himself
+			UpdateMap(map);
+			DisplayView(map);
+			//If snake accidently hits himself
+		}
+
+
 		
 	}
 
@@ -63,6 +69,9 @@ void GetUserInput()
 				break;
 			case 'd':
 				y++;
+			case 'x':
+				system("CLS");
+				exit(0);
 				break;
 		}
 	}
@@ -123,7 +132,16 @@ void UpdateMap(char** map)
 							}
 							else
 							{
-								map[i][j] = ' ';
+								//Food
+								if(i == mouseX && j == mouseY)
+								{
+									map[i][j] = '+';
+								}
+								else
+								{
+									map[i][j] = ' ';	
+								}
+								
 							}
 						}
 					}
