@@ -1,6 +1,7 @@
 #include <iostream>
 #include <conio.h>
 #include <time.h>
+#include <windows.h>
 using namespace std;
 //Function definitions
 char** CreateMap();
@@ -8,28 +9,20 @@ void UpdateMap(char**);
 void DisplayView(char**);
 void AskToContinue();
 void GetUserInput();
-void intro();
+void Intro();
+void Setup();
 //Starting coordinates for snake / snake head
 int x = 3;
 int y = 3;
 int mouseX, mouseY;
+char** map;
 //Contains coordinates for each snake body part
 int* snakeX = new int[400];
 int* snakeY = new int[400];
 
 int main()
 {
-	intro();
-
-	//Create map
-	char** map = CreateMap();
-	//Food
-	srand(time(NULL));
-	//Make mouse coordinates the map width / height
-	mouseX = (rand() % 19)+1;//dont have it spawn on 0
-	mouseY = (rand() % 19)+1;
-	if(mouseX==19){mouseX--;}//dont have it spawn on max
-	if(mouseY==19){mouseY--;}
+	Intro();
 
 	//Game loop
 	bool gameLoop = true;
@@ -38,6 +31,7 @@ int main()
 		GetUserInput();
 		UpdateMap(map);
 		DisplayView(map);
+		Sleep(150);
 	}
 
 	return 0;
@@ -168,9 +162,24 @@ void DisplayView(char** map)
 		cout << endl;
 	}
 }
-void intro()
+void Intro()
 {
-	cout << "Welcome to snake.\nUse the w,a,s and d keys to move.\nPress any key to start. . .";
+	system("CLS");
+	cout << "\n\n\n\n\n   Welcome to snake.\n\n   Use the w,a,s and d keys to move.\n\n   At any point during gameplay, press x to exit.\n\n\n\n      Press any key to start. . .\n";
 	_getch();
 	system("CLS");
+	Setup();
+}
+void Setup()
+{
+	//Create map
+	map = CreateMap();
+	//Food
+	srand(time(NULL));
+	//Make mouse coordinates the map width / height
+	mouseX = (rand() % 19)+1;//dont have it spawn on 0
+	mouseY = (rand() % 19)+1;
+	if(mouseX==19){mouseX--;}//dont have it spawn on max
+	if(mouseY==19){mouseY--;}
+
 }
