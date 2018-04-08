@@ -131,7 +131,8 @@ void UpdateMap(char** map)
 								if(i == mouseX && j == mouseY)
 								{
 									map[i][j] = 'O';
-									mouseX = 0; mouseY=0;	
+									mouseX = (rand() % 19)+1;
+									mouseY = (rand() % 19)+1;
 								}
 								else
 								{
