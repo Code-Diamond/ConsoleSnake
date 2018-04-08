@@ -11,6 +11,7 @@ void AskToContinue();
 void GetUserInput();
 
 
+
 //Starting coordinates for snake / snake head
 int x = 3;
 int y = 3;
@@ -37,9 +38,7 @@ int main()
 	{
 		while(!mouseEaten)
 		{
-			//TODO: Need to retrieve user input 'behind the scenes'
 			GetUserInput();
-
 			UpdateMap(map);
 			DisplayView(map);
 			//If snake accidently hits himself
@@ -69,6 +68,7 @@ void GetUserInput()
 				break;
 			case 'd':
 				y++;
+				break;
 			case 'x':
 				system("CLS");
 				exit(0);
@@ -128,7 +128,16 @@ void UpdateMap(char** map)
 							//Snake
 							if (i == x && j == y)
 							{
-								map[i][j] = 'O';
+								if(i == mouseX && j == mouseY)
+								{
+									map[i][j] = 'O';
+									mouseX = 0; mouseY=0;	
+								}
+								else
+								{
+									map[i][j] = 'O';
+								}
+
 							}
 							else
 							{
@@ -150,6 +159,9 @@ void UpdateMap(char** map)
 		}
 	}
 }
+
+
+
 //Prints the map
 void DisplayView(char** map)
 {
