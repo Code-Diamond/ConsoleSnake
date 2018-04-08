@@ -38,7 +38,7 @@ int main()
 		GetUserInput();
 		UpdateMap(map);
 		DisplayView(map);
-		Sleep(150);
+		Sleep(20);
 	}
 
 	return 0;
@@ -100,6 +100,25 @@ void UpdateMap(char** map)
 			y++;
 			break;
 	}
+
+	//Move snake's head to opposite side of map if touches wall
+	if(x >= 19)
+	{
+		x = 1;
+	}
+	if(y >= 19)
+	{
+		y = 1;
+	}
+	if(x <= 0)
+	{
+		x = 19;
+	}
+	if(y <= 0)
+	{
+		y = 19;
+	}
+
 	for (int i = 0; i < 20; i++)
 	{
 		for (int j = 0; j < 20; j++)
