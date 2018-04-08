@@ -11,21 +11,25 @@ void AskToContinue();
 void GetUserInput();
 void Intro();
 void Setup();
-
+//Direction enumerator
 enum Direction
 {
 	UP, DOWN, LEFT, RIGHT
 };
-Direction direction;
-
+int score = 0;
 //Starting coordinates for snake / snake head
 int x = 3;
 int y = 3;
-int mouseX, mouseY;
-char** map;
 //Contains coordinates for each snake body part
 int* snakeX = new int[400];
 int* snakeY = new int[400];
+int size = 1;
+//Current direction
+Direction direction;
+//Mouse coordinates
+int mouseX, mouseY;
+//Map dynamic array
+char** map;
 
 int main()
 {
@@ -38,7 +42,7 @@ int main()
 		GetUserInput();
 		UpdateMap(map);
 		DisplayView(map);
-		Sleep(20);
+		Sleep(40);
 	}
 
 	return 0;
@@ -126,28 +130,28 @@ void UpdateMap(char** map)
 			//If its top border
 			if (i == 0)
 			{
-				map[i][j] = '#';
+				map[i][j] = '-';
 			}
 			else
 			{
 				//Left border
 				if (j == 0)
 				{
-					map[i][j] = '#';
+					map[i][j] = '|';
 				}
 				else
 				{
 					//Bottom border
 					if (i == 19)
 					{
-						map[i][j] = '#';
+						map[i][j] = '-';
 					}
 					else
 					{
-						//Top border
+						//right border
 						if (j == 19)
 						{
-							map[i][j] = '#';
+							map[i][j] = '|';
 						}
 						else //Other spaces
 						{
@@ -161,6 +165,7 @@ void UpdateMap(char** map)
 									mouseY = (rand() % 19)+1;
 									if(mouseX==19){mouseX--;}//dont have it spawn on max
 									if(mouseY==19){mouseY--;}
+									score+=100;
 								}
 								else
 								{
@@ -173,7 +178,7 @@ void UpdateMap(char** map)
 								//Food
 								if(i == mouseX && j == mouseY)
 								{
-									map[i][j] = '+';
+									map[i][j] = 'M';
 								}
 								else
 								{
@@ -202,6 +207,7 @@ void DisplayView(char** map)
 		}
 		cout << endl;
 	}
+	cout << "\n              Score: " << score << endl;
 }
 void Intro()
 {
