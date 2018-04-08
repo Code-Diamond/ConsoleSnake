@@ -8,6 +8,7 @@ void UpdateMap(char**);
 void DisplayView(char**);
 void AskToContinue();
 void GetUserInput();
+void intro();
 //Starting coordinates for snake / snake head
 int x = 3;
 int y = 3;
@@ -18,6 +19,8 @@ int* snakeY = new int[400];
 
 int main()
 {
+	intro();
+
 	//Create map
 	char** map = CreateMap();
 	//Food
@@ -121,6 +124,8 @@ void UpdateMap(char** map)
 									map[i][j] = 'O';
 									mouseX = (rand() % 19)+1;
 									mouseY = (rand() % 19)+1;
+									if(mouseX==19){mouseX--;}//dont have it spawn on max
+									if(mouseY==19){mouseY--;}
 								}
 								else
 								{
@@ -162,4 +167,10 @@ void DisplayView(char** map)
 		}
 		cout << endl;
 	}
+}
+void intro()
+{
+	cout << "Welcome to snake.\nUse the w,a,s and d keys to move.\nPress any key to start. . .";
+	_getch();
+	system("CLS");
 }
