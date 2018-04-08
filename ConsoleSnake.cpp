@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <conio.h>
 using namespace std;
 
 //Function definitions
@@ -40,34 +40,31 @@ int main()
 		UpdateMap(map);
 		DisplayView(map);
 		//If snake accidently hits himself
-		gameLoop = false;
+		
 	}
-
-
-	AskToContinue();
 
 	return 0;
 }
 //Get the user input
 void GetUserInput()
 {
-	char input;
-	cin >> input;
-	if (input == 'w')
+	if (_kbhit())
 	{
-		currentDirection = UP;
-	}
-	else if (input == 's')
-	{
-		currentDirection = DOWN;
-	}
-	else if (input == 'a')
-	{
-		currentDirection = LEFT;
-	}
-	else if (input == 'd')
-	{
-		currentDirection = RIGHT;
+		switch(_getch())
+		{
+			case 'w':
+				x--;
+				break;
+			case 'a':
+				y--;
+				break;				
+			case 's':
+				x++;
+				break;
+			case 'd':
+				y++;
+				break;
+		}
 	}
 }
 
