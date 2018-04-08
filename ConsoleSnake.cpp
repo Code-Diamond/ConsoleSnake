@@ -11,6 +11,13 @@ void AskToContinue();
 void GetUserInput();
 void Intro();
 void Setup();
+
+enum Direction
+{
+	UP, DOWN, LEFT, RIGHT
+};
+Direction direction;
+
 //Starting coordinates for snake / snake head
 int x = 3;
 int y = 3;
@@ -44,16 +51,16 @@ void GetUserInput()
 		switch(_getch())
 		{
 			case 'w':
-				x--;
+				direction = UP;
 				break;
 			case 'a':
-				y--;
+				direction = LEFT;
 				break;				
 			case 's':
-				x++;
+				direction = DOWN;
 				break;
 			case 'd':
-				y++;
+				direction = RIGHT;
 				break;
 			case 'x':
 				system("CLS");
@@ -78,6 +85,21 @@ char** CreateMap()
 //Logic for updating the game map
 void UpdateMap(char** map)
 {
+	switch(direction)
+	{
+		case UP:
+			x--;
+			break;
+		case LEFT:
+			y--;
+			break;				
+		case DOWN:
+			x++;
+			break;
+		case RIGHT:
+			y++;
+			break;
+	}
 	for (int i = 0; i < 20; i++)
 	{
 		for (int j = 0; j < 20; j++)
@@ -181,5 +203,5 @@ void Setup()
 	mouseY = (rand() % 19)+1;
 	if(mouseX==19){mouseX--;}//dont have it spawn on max
 	if(mouseY==19){mouseY--;}
-
+	direction = RIGHT;
 }
