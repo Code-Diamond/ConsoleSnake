@@ -2,16 +2,12 @@
 #include <conio.h>
 #include <time.h>
 using namespace std;
-
 //Function definitions
 char** CreateMap();
 void UpdateMap(char**);
 void DisplayView(char**);
 void AskToContinue();
 void GetUserInput();
-
-
-
 //Starting coordinates for snake / snake head
 int x = 3;
 int y = 3;
@@ -26,26 +22,19 @@ int main()
 	char** map = CreateMap();
 	//Food
 	srand(time(NULL));
-	bool mouseEaten = false;
-	//make mouse coordinates the map width / height
+	//Make mouse coordinates the map width / height
 	mouseX = (rand() % 19)+1;//dont have it spawn on 0
 	mouseY = (rand() % 19)+1;
 	if(mouseX==19){mouseX--;}//dont have it spawn on max
 	if(mouseY==19){mouseY--;}
-	bool gameLoop = true;
+
 	//Game loop
+	bool gameLoop = true;
 	while (gameLoop)
 	{
-		while(!mouseEaten)
-		{
-			GetUserInput();
-			UpdateMap(map);
-			DisplayView(map);
-			//If snake accidently hits himself
-		}
-
-
-		
+		GetUserInput();
+		UpdateMap(map);
+		DisplayView(map);
 	}
 
 	return 0;
@@ -76,7 +65,6 @@ void GetUserInput()
 		}
 	}
 }
-
 //Initial creation of the gmae map array
 char** CreateMap()
 {
@@ -160,9 +148,6 @@ void UpdateMap(char** map)
 		}
 	}
 }
-
-
-
 //Prints the map
 void DisplayView(char** map)
 {
@@ -177,11 +162,4 @@ void DisplayView(char** map)
 		}
 		cout << endl;
 	}
-}
-//Ask user to press any key and enter to continue
-void AskToContinue()
-{
-	cout << "Press any key and then enter to exit." << endl;
-	char continueKey;
-	cin >> continueKey;
 }
