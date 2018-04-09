@@ -259,7 +259,6 @@ void UpdateMap()
 						if(mouseY==19){mouseY--;}
 						score+=100;
 						//size++;
-						UpdateMap();
 						printed = true;
 					}
 					else
@@ -274,7 +273,6 @@ void UpdateMap()
 			{
 				map[i][j] = ' ';
 			}
-
 
 		}
 	}
