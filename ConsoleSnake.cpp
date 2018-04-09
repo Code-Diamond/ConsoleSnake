@@ -24,8 +24,8 @@ enum Direction
 
 //SNAKE
 //Create Dynamic Arrays
-int* snakeX = new int[0];
-int* snakeY = new int[0];
+int* snakeX = new int[400];
+int* snakeY = new int[400];
 //Starting Position for snake head
 int size = 1;
 
@@ -41,16 +41,21 @@ int mouseX, mouseY;
 int main (void)
 {
 	Intro();
-
+	snakeX[1] = 5;
+	snakeX[2] = 7;
+	snakeX[3] = 9;
+	size = 4;
 	
-	bool gameLoop = true;
-	while (gameLoop)
-	{
-		GetUserInput();
-		UpdateMap();
-		DisplayView();
-		Sleep(40);
-	}
+	// bool gameLoop = true;
+	// while (gameLoop)
+	// {
+	// 	GetUserInput();
+	// 	UpdateMap();
+	// 	DisplayView();
+	// 	Sleep(40);
+	// }
+	ShiftSnake(snakeX, size, snakeX[0]+1);
+	PrintSnake();
 
 	return(0);
 
@@ -165,31 +170,19 @@ void UpdateMap()
 	switch(direction)
 	{
 		case UP:
-			for(int i = 0; i < size; i++)
-			{
-				snakeX[i]--;	
-			}
+			snakeX[0]--;
 			// x--;
 			break;
 		case LEFT:
-			for(int i = 0; i < size; i++)
-			{
-				snakeY[i]--;	
-			}
+			snakeY[0]--;
 			// y--;
 			break;				
 		case DOWN:
-			for(int i = 0; i < size; i++)
-			{
-				snakeX[i]++;	
-			}
+			snakeX[0]++;
 			// x++;
 			break;
 		case RIGHT:
-			for(int i = 0; i < size; i++)
-			{
-				snakeY[i]++;	
-			}
+			snakeY[0]++;
 			// y++;
 			break;
 	}
@@ -258,7 +251,7 @@ void UpdateMap()
 						if(mouseX==19){mouseX--;}//dont have it spawn on max
 						if(mouseY==19){mouseY--;}
 						score+=100;
-						//size++;
+						size++;						
 						printed = true;
 					}
 					else
@@ -273,6 +266,7 @@ void UpdateMap()
 			{
 				map[i][j] = ' ';
 			}
+
 
 		}
 	}
@@ -289,7 +283,7 @@ void DisplayView()
 	{
 		for (int j = 0; j < 20; j++)
 		{
-			cout << map[i][j] << " ";
+			cout << map[i][j];
 		}
 		cout << endl;
 	}
