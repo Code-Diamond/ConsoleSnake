@@ -75,11 +75,14 @@ void ShiftSnake (int* snake, int s, int newPlace)
 		snake[i+1] = t;
 		t = t2;
 	}
-	//Assign last element
-	snake[s] = t;
+
 	//Assign first element
 	snake[0] = newPlace;
-	size++;
+	
+	// //Assign last element
+	// snake[s] = t;
+	
+	// size++;
 
 }
 //Testing function
