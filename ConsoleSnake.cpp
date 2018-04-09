@@ -41,21 +41,21 @@ int mouseX, mouseY;
 int main (void)
 {
 	Intro();
-	snakeX[1] = 5;
-	snakeX[2] = 7;
-	snakeX[3] = 9;
-	size = 4;
+	// snakeX[1] = 5;
+	// snakeX[2] = 7;
+	// snakeX[3] = 9;
+	// size = 4;
 	
-	// bool gameLoop = true;
-	// while (gameLoop)
-	// {
-	// 	GetUserInput();
-	// 	UpdateMap();
-	// 	DisplayView();
-	// 	Sleep(40);
-	// }
-	ShiftSnake(snakeX, size, snakeX[0]+1);
-	PrintSnake();
+	bool gameLoop = true;
+	while (gameLoop)
+	{
+		GetUserInput();
+		UpdateMap();
+		DisplayView();
+		Sleep(40);
+	}
+	// ShiftSnake(snakeX, size, snakeX[0]+1);
+	// PrintSnake();
 
 	return(0);
 
@@ -78,7 +78,7 @@ void ShiftSnake (int* snake, int s, int newPlace)
 
 	//Assign first element
 	snake[0] = newPlace;
-	
+
 	// //Assign last element
 	// snake[s] = t;
 	
@@ -173,19 +173,19 @@ void UpdateMap()
 	switch(direction)
 	{
 		case UP:
-			snakeX[0]--;
+			ShiftSnake(snakeX, size, snakeX[0]-1);
 			// x--;
 			break;
 		case LEFT:
-			snakeY[0]--;
+			ShiftSnake(snakeY, size, snakeY[0]-1);
 			// y--;
 			break;				
 		case DOWN:
-			snakeX[0]++;
+			ShiftSnake(snakeX, size, snakeX[0]+1);
 			// x++;
 			break;
 		case RIGHT:
-			snakeY[0]++;
+			ShiftSnake(snakeY, size, snakeY[0]+1);
 			// y++;
 			break;
 	}
@@ -286,7 +286,7 @@ void DisplayView()
 	{
 		for (int j = 0; j < 20; j++)
 		{
-			cout << map[i][j];
+			cout << map[i][j] << ' ';
 		}
 		cout << endl;
 	}
