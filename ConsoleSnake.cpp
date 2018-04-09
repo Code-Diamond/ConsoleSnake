@@ -52,7 +52,7 @@ int main (void)
 		GetUserInput();
 		UpdateMap();
 		DisplayView();
-		Sleep(40);
+		Sleep(100);
 	}
 	// ShiftSnake(snakeX, size, snakeX[0]+1);
 	// PrintSnake();
@@ -167,8 +167,9 @@ void GetUserInput()
 //Logic for updating the game map
 void UpdateMap()
 {
-	int lastPositionX = snakeX[size - 1];
-	int lastPositionY = snakeY[size - 1];
+	int lastPositionX = snakeX[size-1];
+	int lastPositionY = snakeY[size-1];
+
 	//Move the snake based on direction
 	switch(direction)
 	{
@@ -264,6 +265,9 @@ void UpdateMap()
 	}
 
 
+
+
+
 	//Update the map
 	for(int i = 0; i < 20; i++)
 	{
@@ -301,7 +305,15 @@ void UpdateMap()
 					//If its the snake eating mouse
 					if(i == mouseX && j == mouseY)
 					{
-						map[i][j] = 'O';
+						if(k==0)
+						{
+							map[i][j] = 'S';	
+						}
+						else
+						{
+							map[i][j] = 'O';
+						}
+						
 						mouseX = (rand() % 19)+1;
 						mouseY = (rand() % 19)+1;
 						if(mouseX==19){mouseX--;}//dont have it spawn on max
@@ -315,10 +327,19 @@ void UpdateMap()
 					}
 					else
 					{
-						map[i][j] = 'O';
+						if(k==0)
+						{
+							map[i][j] = 'S';	
+						}
+						else
+						{
+							map[i][j] = 'O';
+						}
 						printed = true;
 					}
 				}	
+
+
 			}
 			//Blank tile
 			if(printed == false)
