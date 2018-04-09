@@ -2,51 +2,133 @@
 #include <conio.h>
 #include <time.h>
 #include <windows.h>
+
 using namespace std;
-//Function definitions
-char** CreateMap();
-void UpdateMap(char**);
-void DisplayView(char**);
-void AskToContinue();
-void GetUserInput();
+
+void ShiftSnake (int* snake, int s, int newPlace);
+void PrintSnake ();
+
 void Intro();
 void Setup();
+char** CreateMap(char** map);
+void UpdateMap();
+void DisplayView();
+void GetUserInput();
+
+
 //Direction enumerator
 enum Direction
 {
 	UP, DOWN, LEFT, RIGHT
 };
-int score = 0;
-//Starting coordinates for snake / snake head
-int x = 3;
-int y = 3;
-//Contains coordinates for each snake body part
-int* snakeX = new int[400];
-int* snakeY = new int[400];
+
+//SNAKE
+//Create Dynamic Arrays
+int* snakeX = new int[0];
+int* snakeY = new int[0];
+//Starting Position for snake head
 int size = 1;
-//Current direction
+
+//Map, score and current direction
+char** map;
+int score = 0;
 Direction direction;
+
 //Mouse coordinates
 int mouseX, mouseY;
-//Map dynamic array
-char** map;
 
-int main()
+
+int main (void)
 {
 	Intro();
 
-	//Game loop
+	
 	bool gameLoop = true;
 	while (gameLoop)
 	{
 		GetUserInput();
-		UpdateMap(map);
-		DisplayView(map);
+		UpdateMap();
+		DisplayView();
 		Sleep(40);
 	}
 
-	return 0;
+	return(0);
+
 }
+
+void ShiftSnake (int* snake, int s, int newPlace)
+{
+  	//Temporary holders for previous numbers in the array
+	int t;
+	int t2;
+	t = snake[0];
+
+	//Shift array to the right and except first and last elements
+	for (int i = 0; i < s-1; i++)
+	{
+		t2 = snake[i+1];
+		snake[i+1] = t;
+		t = t2;
+	}
+	//Assign last element
+	snake[s] = t;
+	//Assign first element
+	snake[0] = newPlace;
+	size++;
+
+}
+//Testing function
+void PrintSnake()
+{
+	for (int  i= 0; i < size; i++) 
+	{
+		cout << snakeX[i] << ' ';
+	}
+	cout << endl;
+}
+
+
+
+
+
+
+
+
+void Intro()
+{
+	system("CLS");
+	cout << "\n\n\n\n\n   Welcome to snake.\n\n   Use the w,a,s and d keys to move.\n\n   At any point during gameplay, press x to exit.\n\n\n\n      Press any key to start. . .\n";
+	_getch();
+	system("CLS");
+	Setup();
+}
+//Initial Setup
+void Setup()
+{
+	//Create map
+	map = CreateMap(map);
+	//Food
+	srand(time(NULL));
+	//Make mouse coordinates the map width / height
+	mouseX = (rand() % 19)+1;//dont have it spawn on 0
+	mouseY = (rand() % 19)+1;
+	if(mouseX==19){mouseX--;}//dont have it spawn on max
+	if(mouseY==19){mouseY--;}
+	direction = RIGHT;
+	snakeX[0] = 3;
+	snakeY[0] = 3;
+}
+//Initial creation of the game map array
+char** CreateMap(char** map)
+{
+	map = new char*[20];
+	for (int i = 0; i < 20; i++)
+	{
+		map[i] = new char[20];
+	}
+	return map;
+}
+
 //Get the user input
 void GetUserInput()
 {
@@ -73,128 +155,134 @@ void GetUserInput()
 		}
 	}
 }
-//Initial creation of the gmae map array
-char** CreateMap()
-{
-	char** map = new char*[20];
 
-
-	for (int i = 0; i < 20; i++)
-	{
-		map[i] = new char[20];
-	}
-
-	return map;
-}
 //Logic for updating the game map
-void UpdateMap(char** map)
+void UpdateMap()
 {
+	int lastPositionX = snakeX[size - 1];
+	int lastPositionY = snakeY[size - 1];
+	//Move the snake based on direction
 	switch(direction)
 	{
 		case UP:
-			x--;
+			for(int i = 0; i < size; i++)
+			{
+				snakeX[i]--;	
+			}
+			// x--;
 			break;
 		case LEFT:
-			y--;
+			for(int i = 0; i < size; i++)
+			{
+				snakeY[i]--;	
+			}
+			// y--;
 			break;				
 		case DOWN:
-			x++;
+			for(int i = 0; i < size; i++)
+			{
+				snakeX[i]++;	
+			}
+			// x++;
 			break;
 		case RIGHT:
-			y++;
+			for(int i = 0; i < size; i++)
+			{
+				snakeY[i]++;	
+			}
+			// y++;
 			break;
 	}
-
-	//Move snake's head to opposite side of map if touches wall
-	if(x >= 19)
+	//Reposition snake body if touching wall
+	for(int i = 0; i < size; i++)
 	{
-		x = 1;
-	}
-	if(y >= 19)
-	{
-		y = 1;
-	}
-	if(x <= 0)
-	{
-		x = 19;
-	}
-	if(y <= 0)
-	{
-		y = 19;
-	}
-
-	for (int i = 0; i < 20; i++)
-	{
-		for (int j = 0; j < 20; j++)
+		if(snakeX[i] >= 19)
 		{
-			//If its top border
-			if (i == 0)
+			snakeX[i] = 1;
+		}
+		if(snakeY[i] >= 19)
+		{
+			snakeY[i] = 1;
+		}
+		if(snakeX[i] <= 0)
+		{
+			snakeX[i] = 19;
+		}
+		if(snakeY[i] <= 0)
+		{
+			snakeY[i] = 19;
+		}
+	}
+
+
+	//Update the map
+	for(int i = 0; i < 20; i++)
+	{
+		for(int j = 0; j < 20; j++)
+		{
+			bool printed = false;
+
+			//Borders
+			if(i == 0 || i == 19)
 			{
 				map[i][j] = '-';
+				printed = true;
 			}
-			else
+			if(j == 0 || j == 19)
 			{
-				//Left border
-				if (j == 0)
+				map[i][j] = '|';
+				printed = true;
+			}
+			//Mouse
+			if(i == mouseX && j == mouseY)
+			{
+				map[i][j] = 'M';
+				printed = true;
+			}
+
+			//Snake
+			for(int k = 0; k < size; k++)
+			{
+				//Check if mouse eaten then -v
+				int x = snakeX[k];
+				int y = snakeY[k];
+				//If its the snake
+				if(i == x && j == y)
 				{
-					map[i][j] = '|';
-				}
-				else
-				{
-					//Bottom border
-					if (i == 19)
+					//If its the snake eating mouse
+					if(i == mouseX && j == mouseY)
 					{
-						map[i][j] = '-';
+						map[i][j] = 'O';
+						mouseX = (rand() % 19)+1;
+						mouseY = (rand() % 19)+1;
+						if(mouseX==19){mouseX--;}//dont have it spawn on max
+						if(mouseY==19){mouseY--;}
+						score+=100;
+						//size++;
+						UpdateMap();
+						printed = true;
 					}
 					else
 					{
-						//right border
-						if (j == 19)
-						{
-							map[i][j] = '|';
-						}
-						else //Other spaces
-						{
-							//Snake
-							if (i == x && j == y)
-							{
-								if(i == mouseX && j == mouseY)
-								{
-									map[i][j] = 'O';
-									mouseX = (rand() % 19)+1;
-									mouseY = (rand() % 19)+1;
-									if(mouseX==19){mouseX--;}//dont have it spawn on max
-									if(mouseY==19){mouseY--;}
-									score+=100;
-								}
-								else
-								{
-									map[i][j] = 'O';
-								}
-
-							}
-							else
-							{
-								//Food
-								if(i == mouseX && j == mouseY)
-								{
-									map[i][j] = 'M';
-								}
-								else
-								{
-									map[i][j] = ' ';	
-								}
-								
-							}
-						}
+						map[i][j] = 'O';
+						printed = true;
 					}
-				}
+				}	
 			}
+			//Blank tile
+			if(printed == false)
+			{
+				map[i][j] = ' ';
+			}
+
+
 		}
 	}
+
 }
+
 //Prints the map
-void DisplayView(char** map)
+void DisplayView()
 {
 	//Clear screen
 	system("CLS");
@@ -208,25 +296,4 @@ void DisplayView(char** map)
 		cout << endl;
 	}
 	cout << "\n              Score: " << score << endl;
-}
-void Intro()
-{
-	system("CLS");
-	cout << "\n\n\n\n\n   Welcome to snake.\n\n   Use the w,a,s and d keys to move.\n\n   At any point during gameplay, press x to exit.\n\n\n\n      Press any key to start. . .\n";
-	_getch();
-	system("CLS");
-	Setup();
-}
-void Setup()
-{
-	//Create map
-	map = CreateMap();
-	//Food
-	srand(time(NULL));
-	//Make mouse coordinates the map width / height
-	mouseX = (rand() % 19)+1;//dont have it spawn on 0
-	mouseY = (rand() % 19)+1;
-	if(mouseX==19){mouseX--;}//dont have it spawn on max
-	if(mouseY==19){mouseY--;}
-	direction = RIGHT;
 }
