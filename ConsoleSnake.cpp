@@ -174,18 +174,71 @@ void UpdateMap()
 	{
 		case UP:
 			ShiftSnake(snakeX, size, snakeX[0]-1);
+			for(int i = 1; i < size;i++)
+			{
+				//UP
+				if(snakeY[i] > snakeY[0])
+				{
+					snakeY[i]--;
+				}
+				//UP
+				if(snakeY[i] < snakeY[0])
+				{
+					snakeY[i]++;
+				}														
+			}
 			// x--;
 			break;
 		case LEFT:
 			ShiftSnake(snakeY, size, snakeY[0]-1);
+			for(int i = 1; i < size;i++)
+			{
+				//LEFT
+				if(snakeX[i] > snakeX[0])
+				{
+					snakeX[i]--;
+				}
+				//LEFT
+				if(snakeX[i] < snakeX[0])
+				{
+					snakeX[i]++;
+				}				
+			}
 			// y--;
 			break;				
 		case DOWN:
 			ShiftSnake(snakeX, size, snakeX[0]+1);
+			for(int i = 1; i < size;i++)
+			{
+				//DOWN
+				if(snakeY[i] < snakeY[0])
+				{
+					snakeY[i]++;
+				}
+				//DOWN
+				if(snakeY[i] > snakeY[0])
+				{
+					snakeY[i]--;
+				}
+
+			}
 			// x++;
 			break;
 		case RIGHT:
 			ShiftSnake(snakeY, size, snakeY[0]+1);
+			for(int i = 1; i < size;i++)
+			{
+				//RIGHT
+				if(snakeX[i] < snakeX[0])
+				{
+					snakeX[i]++;
+				}
+				//RIGHT
+				if(snakeX[i] > snakeX[0])
+				{
+					snakeX[i]--;
+				}				
+			}
 			// y++;
 			break;
 	}
@@ -254,6 +307,9 @@ void UpdateMap()
 						if(mouseX==19){mouseX--;}//dont have it spawn on max
 						if(mouseY==19){mouseY--;}
 						score+=100;
+						
+						snakeX[size-1] = lastPositionX;
+						snakeY[size-1] = lastPositionY;
 						size++;						
 						printed = true;
 					}
@@ -286,7 +342,7 @@ void DisplayView()
 	{
 		for (int j = 0; j < 20; j++)
 		{
-			cout << map[i][j] << ' ';
+			cout << map[i][j];
 		}
 		cout << endl;
 	}
