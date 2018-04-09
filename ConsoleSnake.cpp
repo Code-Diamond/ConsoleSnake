@@ -5,8 +5,8 @@
 
 using namespace std;
 
-void ShiftSnake (int* snake, int s, int newPlace);
-void PrintSnake ();
+void ShiftSnake(int* snake, int s, int newPlace);
+void PrintSnake();
 
 void Intro();
 void Setup();
@@ -27,7 +27,7 @@ enum Direction
 int* snakeX = new int[400];
 int* snakeY = new int[400];
 //Starting Position for snake head
-int size = 1;
+int snakeSize = 1;
 
 //Map, score and current direction
 char** map;
@@ -38,14 +38,14 @@ Direction direction;
 int mouseX, mouseY;
 
 
-int main (void)
+int main(void)
 {
 	Intro();
 	// snakeX[1] = 5;
 	// snakeX[2] = 7;
 	// snakeX[3] = 9;
 	// size = 4;
-	
+
 	bool gameLoop = true;
 	while (gameLoop)
 	{
@@ -61,18 +61,18 @@ int main (void)
 
 }
 
-void ShiftSnake (int* snake, int s, int newPlace)
+void ShiftSnake(int* snake, int s, int newPlace)
 {
-  	//Temporary holders for previous numbers in the array
+	//Temporary holders for previous numbers in the array
 	int t;
 	int t2;
 	t = snake[0];
 
 	//Shift array to the right and except first and last elements
-	for (int i = 0; i < s-1; i++)
+	for (int i = 0; i < s - 1; i++)
 	{
-		t2 = snake[i+1];
-		snake[i+1] = t;
+		t2 = snake[i + 1];
+		snake[i + 1] = t;
 		t = t2;
 	}
 
@@ -81,14 +81,14 @@ void ShiftSnake (int* snake, int s, int newPlace)
 
 	// //Assign last element
 	// snake[s] = t;
-	
+
 	// size++;
 
 }
 //Testing function
 void PrintSnake()
 {
-	for (int  i= 0; i < size; i++) 
+	for (int i = 0; i < snakeSize; i++)
 	{
 		cout << snakeX[i] << ' ';
 	}
@@ -118,10 +118,10 @@ void Setup()
 	//Food
 	srand(time(NULL));
 	//Make mouse coordinates the map width / height
-	mouseX = (rand() % 19)+1;//dont have it spawn on 0
-	mouseY = (rand() % 19)+1;
-	if(mouseX==19){mouseX--;}//dont have it spawn on max
-	if(mouseY==19){mouseY--;}
+	mouseX = (rand() % 19) + 1;//dont have it spawn on 0
+	mouseY = (rand() % 19) + 1;
+	if (mouseX == 19) { mouseX--; }//dont have it spawn on max
+	if (mouseY == 19) { mouseY--; }
 	direction = RIGHT;
 	snakeX[0] = 3;
 	snakeY[0] = 3;
@@ -142,24 +142,24 @@ void GetUserInput()
 {
 	if (_kbhit())
 	{
-		switch(_getch())
+		switch (_getch())
 		{
-			case 'w':
-				direction = UP;
-				break;
-			case 'a':
-				direction = LEFT;
-				break;				
-			case 's':
-				direction = DOWN;
-				break;
-			case 'd':
-				direction = RIGHT;
-				break;
-			case 'x':
-				system("CLS");
-				exit(0);
-				break;
+		case 'w':
+			direction = UP;
+			break;
+		case 'a':
+			direction = LEFT;
+			break;
+		case 's':
+			direction = DOWN;
+			break;
+		case 'd':
+			direction = RIGHT;
+			break;
+		case 'x':
+			system("CLS");
+			exit(0);
+			break;
 		}
 	}
 }
@@ -167,110 +167,114 @@ void GetUserInput()
 //Logic for updating the game map
 void UpdateMap()
 {
-	int lastPositionX = snakeX[size-1];
-	int lastPositionY = snakeY[size-1];
+	int lastPositionX = snakeX[snakeSize - 1];
+	int lastPositionY = snakeY[snakeSize - 1];
 
 	//Move the snake based on direction
-	switch(direction)
+	switch (direction)
 	{
-		case UP:
-			ShiftSnake(snakeX, size, snakeX[0]-1);
-			for(int i = 1; i < size;i++)
+	case UP:
+		ShiftSnake(snakeX, snakeSize, snakeX[0] - 1);
+		for (int i = 1; i < snakeSize; i++)
+		{
+			//UP
+			if (snakeY[i] > snakeY[0])
 			{
-				//UP
-				if(snakeY[i] > snakeY[0])
-				{
-					snakeY[i]--;
-				}
-				//UP
-				if(snakeY[i] < snakeY[0])
-				{
-					snakeY[i]++;
-				}														
+				snakeY[i]--;
 			}
-			// x--;
-			break;
-		case LEFT:
-			ShiftSnake(snakeY, size, snakeY[0]-1);
-			for(int i = 1; i < size;i++)
+			//UP
+			if (snakeY[i] < snakeY[0])
 			{
-				//LEFT
-				if(snakeX[i] > snakeX[0])
-				{
-					snakeX[i]--;
-				}
-				//LEFT
-				if(snakeX[i] < snakeX[0])
-				{
-					snakeX[i]++;
-				}				
+				snakeY[i]++;
 			}
-			// y--;
-			break;				
-		case DOWN:
-			ShiftSnake(snakeX, size, snakeX[0]+1);
-			for(int i = 1; i < size;i++)
+		}
+		// x--;
+		break;
+	case LEFT:
+		ShiftSnake(snakeY, snakeSize, snakeY[0] - 1);
+		for (int i = 1; i < snakeSize;i++)
+		{
+			//LEFT
+			if (snakeX[i] > snakeX[0])
 			{
-				//DOWN
-				if(snakeY[i] < snakeY[0])
-				{
-					snakeY[i]++;
-				}
-				//DOWN
-				if(snakeY[i] > snakeY[0])
-				{
-					snakeY[i]--;
-				}
+				snakeX[i]--;
+			}
+			//LEFT
+			if (snakeX[i] < snakeX[0])
+			{
+				snakeX[i]++;
+			}
+		}
+		// y--;
+		break;
+	case DOWN:
+		ShiftSnake(snakeX, snakeSize, snakeX[0] + 1);
+		for (int i = 1; i < snakeSize;i++)
+		{
+			//DOWN
+			if (snakeY[i] < snakeY[0])
+			{
+				snakeY[i]++;
+			}
+			//DOWN
+			if (snakeY[i] > snakeY[0])
+			{
+				snakeY[i]--;
+			}
 
-			}
-			// x++;
-			break;
-		case RIGHT:
-			ShiftSnake(snakeY, size, snakeY[0]+1);
-			for(int i = 1; i < size;i++)
+		}
+		// x++;
+		break;
+	case RIGHT:
+		ShiftSnake(snakeY, snakeSize, snakeY[0] + 1);
+		for (int i = 1; i < snakeSize;i++)
+		{
+			//RIGHT
+			if (snakeX[i] < snakeX[0])
 			{
-				//RIGHT
-				if(snakeX[i] < snakeX[0])
-				{
-					snakeX[i]++;
-				}
-				//RIGHT
-				if(snakeX[i] > snakeX[0])
-				{
-					snakeX[i]--;
-				}				
+				snakeX[i]++;
 			}
-			// y++;
-			break;
+			//RIGHT
+			if (snakeX[i] > snakeX[0])
+			{
+				snakeX[i]--;
+			}
+		}
+		// y++;
+		break;
 	}
 	//Lose game if snake body if touching wall switch comment for wall to reposition snake
 	//for(int i = 0; i < size; i++)
 	//{
-		if(snakeX[0] >= 19)//if(snakeX[i] >= 19)
-		{			
-			cout << "\n\n             GAME OVER!" << endl;
-			exit(0);
-			//snakeX[i] = 1;
-		}
-		if(snakeY[0] >= 19)
-		{
-			cout << "\n\n             GAME OVER!" << endl;
-			exit(0);
-			//snakeY[i] = 1;
+	if (snakeX[0] >= 19)//if(snakeX[i] >= 19)
+	{
+		cout << "\n\n             GAME OVER!" << endl << endl << "   Press any key to exit.";
+		_getch();
+		exit(0);
+		//snakeX[i] = 1;
+	}
+	if (snakeY[0] >= 19)
+	{
+		cout << "\n\n             GAME OVER!" << endl << endl << "   Press any key to exit.";
+		_getch();
+		exit(0);
+		//snakeY[i] = 1;
 
-		}
-		if(snakeX[0] <= 0)
-		{
-			cout << "\n\n             GAME OVER!" << endl;
-			exit(0);
-			//snakeX[i] = 19;
-		}
-		if(snakeY[0] <= 0)
-		{
-			cout << "\n\n             GAME OVER!" << endl;
-			exit(0);
-			//snakeY[i] = 19;
-		}
+	}
+	if (snakeX[0] <= 0)
+	{
+		cout << "\n\n             GAME OVER!" << endl << endl << "   Press any key to exit.";
+		_getch();
+		exit(0);
+		//snakeX[i] = 19;
+	}
+	if (snakeY[0] <= 0)
+	{
+		cout << "\n\n             GAME OVER!" << endl << endl << "   Press any key to exit.";
+		_getch();
+		exit(0);
+		//snakeY[i] = 19;
+	}
 	//}
 
 
@@ -278,67 +282,67 @@ void UpdateMap()
 
 
 	//Update the map
-	for(int i = 0; i < 20; i++)
+	for (int i = 0; i < 20; i++)
 	{
-		for(int j = 0; j < 20; j++)
+		for (int j = 0; j < 20; j++)
 		{
 			bool printed = false;
 
 			//Borders
-			if(i == 0 || i == 19)
+			if (i == 0 || i == 19)
 			{
 				map[i][j] = '-';
 				printed = true;
 			}
-			if(j == 0 || j == 19)
+			if (j == 0 || j == 19)
 			{
 				map[i][j] = '|';
 				printed = true;
 			}
 			//Mouse
-			if(i == mouseX && j == mouseY)
+			if (i == mouseX && j == mouseY)
 			{
 				map[i][j] = 'M';
 				printed = true;
 			}
 
 			//Snake
-			for(int k = 0; k < size; k++)
+			for (int k = 0; k < snakeSize; k++)
 			{
 				//Check if mouse eaten then -v
 				int x = snakeX[k];
 				int y = snakeY[k];
 				//If its the snake
-				if(i == x && j == y)
+				if (i == x && j == y)
 				{
 					//If its the snake eating mouse
-					if(i == mouseX && j == mouseY)
+					if (i == mouseX && j == mouseY)
 					{
-						if(k==0)
+						if (k == 0)
 						{
-							map[i][j] = 'S';	
+							map[i][j] = 'S';
 						}
 						else
 						{
 							map[i][j] = 'O';
 						}
-						
-						mouseX = (rand() % 19)+1;
-						mouseY = (rand() % 19)+1;
-						if(mouseX==19){mouseX--;}//dont have it spawn on max
-						if(mouseY==19){mouseY--;}
-						score+=100;
-						
-						snakeX[size-1] = lastPositionX;
-						snakeY[size-1] = lastPositionY;
-						size++;						
+
+						mouseX = (rand() % 19) + 1;
+						mouseY = (rand() % 19) + 1;
+						if (mouseX == 19) { mouseX--; }//dont have it spawn on max
+						if (mouseY == 19) { mouseY--; }
+						score += 100;
+
+						snakeX[snakeSize - 1] = lastPositionX;
+						snakeY[snakeSize - 1] = lastPositionY;
+						snakeSize++;
 						printed = true;
 					}
 					else
 					{
-						if(k==0)
+						if (k == 0)
 						{
-							map[i][j] = 'S';	
+							map[i][j] = 'S';
 						}
 						else
 						{
@@ -346,12 +350,12 @@ void UpdateMap()
 						}
 						printed = true;
 					}
-				}	
+				}
 
 
 			}
 			//Blank tile
-			if(printed == false)
+			if (printed == false)
 			{
 				map[i][j] = ' ';
 			}
