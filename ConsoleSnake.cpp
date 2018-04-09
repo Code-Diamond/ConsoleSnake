@@ -52,7 +52,7 @@ int main (void)
 		GetUserInput();
 		UpdateMap();
 		DisplayView();
-		Sleep(100);
+		Sleep(35);
 	}
 	// ShiftSnake(snakeX, size, snakeX[0]+1);
 	// PrintSnake();
@@ -105,7 +105,7 @@ void PrintSnake()
 void Intro()
 {
 	system("CLS");
-	cout << "\n\n\n\n\n   Welcome to snake.\n\n   Use the w,a,s and d keys to move.\n\n   At any point during gameplay, press x to exit.\n\n\n\n      Press any key to start. . .\n";
+	cout << "\n\n\n\n\n   Welcome to snake.\n\n   Use the w,a,s and d keys to move.\n\n   At any point during gameplay, press x to exit.\n\n\n    If you touch the walls at any point you lose.\n      Press any key to start. . .\n";
 	_getch();
 	system("CLS");
 	Setup();
@@ -243,26 +243,35 @@ void UpdateMap()
 			// y++;
 			break;
 	}
-	//Reposition snake body if touching wall
-	for(int i = 0; i < size; i++)
-	{
-		if(snakeX[i] >= 19)
-		{
-			snakeX[i] = 1;
+	//Lose game if snake body if touching wall switch comment for wall to reposition snake
+	//for(int i = 0; i < size; i++)
+	//{
+		if(snakeX[0] >= 19)//if(snakeX[i] >= 19)
+		{			
+			cout << "\n\n             GAME OVER!" << endl;
+			exit(0);
+			//snakeX[i] = 1;
 		}
-		if(snakeY[i] >= 19)
+		if(snakeY[0] >= 19)
 		{
-			snakeY[i] = 1;
+			cout << "\n\n             GAME OVER!" << endl;
+			exit(0);
+			//snakeY[i] = 1;
+
 		}
-		if(snakeX[i] <= 0)
+		if(snakeX[0] <= 0)
 		{
-			snakeX[i] = 19;
+			cout << "\n\n             GAME OVER!" << endl;
+			exit(0);
+			//snakeX[i] = 19;
 		}
-		if(snakeY[i] <= 0)
+		if(snakeY[0] <= 0)
 		{
-			snakeY[i] = 19;
+			cout << "\n\n             GAME OVER!" << endl;
+			exit(0);
+			//snakeY[i] = 19;
 		}
-	}
+	//}
 
 
 
@@ -363,7 +372,7 @@ void DisplayView()
 	{
 		for (int j = 0; j < 20; j++)
 		{
-			cout << map[i][j];
+			cout << map[i][j] << ' ';
 		}
 		cout << endl;
 	}
